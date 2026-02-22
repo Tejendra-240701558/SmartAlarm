@@ -1,3 +1,4 @@
+private lateinit var dbHelper: SleepDatabaseHelper
 package com.example.smartalarm
 
 import android.os.Bundle
@@ -17,6 +18,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        dbHelper = SleepDatabaseHelper(this)
 
         sleepSensorManager = SleepSensorManager(this)
 
@@ -24,7 +26,11 @@ class MainActivity : ComponentActivity() {
             runOnUiThread {
                 magnitudeState.value = mag
                 categoryState.value = cat
+
+                // Save into database
+                dbHelper.insertData(mag, cat)
             }
+        }
             Log.d("SleepData", "Magnitude: $mag | Category: $cat")
         }
 
